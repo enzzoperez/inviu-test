@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import ButtonCharge from "./components/ButtonCharge";
+import Header from "./components/Header";
+import ListPosts from "./components/ListPosts";
+import { getPosts } from "./utils/services";
+import styled from "styled-components";
+
+const Root = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [data, setData] = useState();
+
+    const chargePosts = async () => {
+        const data = await getPosts();
+        setData(data);
+    };
+
+    return (
+        <Root>
+            <Header headerText={"Demo JS"} />
+            <ButtonCharge
+                textButton={"Cargar Posts"}
+                clickBehaviour={chargePosts}
+            />
+            {data && <ListPosts data={data} />}
+        </Root>
+    );
 }
 
 export default App;
